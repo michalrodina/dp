@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iterating Over an Array</title>
+</head>
+<body>
+    <h1>Items in the List:</h1>
+    <table>
+        {% for row in preds %}
+        <tr>
+            <td>{{ row.title }} </td><td> {{ row.ts_now }} </td><td> <a href="/update/{{row.id}}">Edit</a> </td><td> <a href="dash/predictor/show/{{row.id}}">Show</a> </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

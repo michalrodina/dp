@@ -1,0 +1,49 @@
+
+{% if pred_type == "sarimax" %}
+    {% if pred == false %}
+        {% set p = 0 %}
+        {% set d = 0 %}
+        {% set q = 0 %}
+        {% set sp = 0 %}
+        {% set sd = 0 %}
+        {% set sq = 0 %}
+        {% set sm = 0 %}
+    {% else %}
+        {% set p = pred.model.params.order[0] %}
+        {% set d = pred.model.params.order[1] %}
+        {% set q = pred.model.params.order[2] %}
+        {% set sp = pred.model.params.sorder[0] %}
+        {% set sd = pred.model.params.sorder[1] %}
+        {% set sq = pred.model.params.sorder[2] %}
+        {% set sm = pred.model.params.order[3] %}
+    {% endif %}
+
+<label for="pred_param[p]">p</label><input type="text" id="pred_param[p]" name="pred_param[p]" value="{{p}}" />
+<label for="pred_param[d]">d</label><input type="text" id="pred_param[d]" name="pred_param[d]" value="{{d}}" />
+<label for="pred_param[q]">q</label><input type="text" id="pred_param[q]" name="pred_param[q]" value="{{q}}" />
+
+<label for="pred_param[sp]">sp</label><input type="text" id="pred_param[sp]" name="pred_param[sp]" value="{{sp}}" />
+<label for="pred_param[sd]">sd</label><input type="text" id="pred_param[sd]" name="pred_param[sd]" value="{{sd}}" />
+<label for="pred_param[sq]">sq</label><input type="text" id="pred_param[sq]" name="pred_param[sq]" value="{{sq}}" />
+
+<label for="pred_param[sn]">sn</label><input type="text" id="pred_param[sn]" name="pred_param[sn]" value="{{sm}}" />
+{% endif %}
+{% if pred_type == "prophet" %}<span>Prophet</span>{% endif %}
+{% if pred_type == "lstm" %}
+    {% if pred == false %}
+        {% set n_layers = 0 %}
+        {% set n_neurons = 0 %}
+        {% set n_epochs = 0 %}
+        {% set batch_size = 0 %}
+    {% else %}
+        {% set n_layers = pred.model.params.n_layers %}
+        {% set n_neurons = pred.model.params.n_neurons %}
+        {% set n_epochs = pred.model.params.n_epochs %}
+        {% set batch_size = pred.model.params.batch_size %}
+
+    {% endif %}
+
+<label for="pred_param[n_layers]">Layers</label><input type="text" id="pred_param[n_layers]" name="pred_param[n_layers]" value="{{n_layers}}" />
+<label for="pred_param[n_neurons]">Neurons per layer</label><input type="text" id="pred_param[n_neurons]" name="pred_param[n_neurons]" value="{{n_neurons}}" />
+<label for="pred_param[n_epochs]">Training epochs</label><input type="text" id="pred_param[n_epochs]" name="pred_param[n_epochs]" value="{{n_epochs}}" />
+{% endif %}

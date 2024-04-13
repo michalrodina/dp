@@ -1,0 +1,23 @@
+# system
+pip==21.1.2
+setuptools==57.0.0
+wheel==0.36.2
+
+# basic
+numpy
+matplotlib
+plotly
+flask
+
+# data
+pandas
+psycopg2
+Flask-SQLAlchemy
+SQLAlchemy
+
+# analytics
+statsmodels
+prophet
+# tensorflow
+keras
+scikit-learn
