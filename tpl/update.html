@@ -1,0 +1,93 @@
+{% if pred == None %}
+    {% set id = 0 %}
+    {% set title = "" %}
+    {% set id_item = "" %}
+    {% set n_history = 30 %}
+    {% set ts_now = "2018-01-01 00:00:00" %}
+{% else %}
+    {% set id = pred.id %}
+    {% set title = pred.title %}
+    {% if not pred.datasource %}
+        {% set id_item = "" %}
+    {% else %}
+        {% set id_item = pred.datasource.params.id_item %}
+    {% endif %}0
+    {% set n_history = pred.n_history %}
+    {% set ts_now = pred.ts_now %}
+{% endif %}
+{{pred}}
+{{id_item}}
+<style type="text/css">
+    label {
+        display: block;
+    }
+
+    input,
+    select {
+        display: block;
+    }
+</style>
+<form method="post">
+    <a>{{pred.guid}}</a>
+    <input type="hidden" name="predictor_id" value="{{id}}" />
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" value="{{title}}" />
+
+    <fieldset>
+        <legend>Datasource definition</legend>
+        <label for="ds_type">Datový zdroj</label>
+        <select id="ds_type" name="ds_type">
+            <option value="datasklad">Datasklad</option>
+        </select>
+        <label for="ds_id_item">Veličina</label>
+        <input type="text" name="ds_id_item" id="ds_id_item" value="{{id_item}}"/>
+    </fieldset>
+
+    <fieldset>
+        <legend>Predictor definition</legend>
+        <label for="n_history">Počet period pro trénink</label>
+        <input type="text" name="n_history" id="n_history" value="{{n_history}}"/>
+        <label for="pred_type">Predictor</label>
+        <select id="pred_type" name="pred_type">
+            <option value="sarimax">SARIMAX</option>
+            <option value="lstm">LSTM</option>
+            <option value="prophet">Prophet</option>
+        </select>
+        <div id="pred_params">
+        </div>
+    </fieldset>
+
+    <!--
+    <label for="datasource">Datasource definition</label>
+    <textarea db_id="datasource" name="datasource">{{pred.datasource}}</textarea>
+    -->
+
+    <label for="ts_now">Up to date</label>
+    <input type="text" id="ts_now" name="ts_now" value="{{ts_now}}"/>
+
+    <input type="submit" value="Update" />
+</form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+$('#pred_type').on('change', function(e) {
+    console.log('callback', e.target.value);
+
+    $.ajax({
+      type     : 'POST',
+      url      : '/ajax/predictor/form',
+      dataType : "text",
+      contentType: 'text/plain;charset=UTF-8',
+      data     : JSON.stringify({'model': e.target.value, 'id': '{{pred.id}}'}),
+      success : function (result) {
+        console.log(result);
+        $('#pred_params').html(result);
+      },
+      error : function (error) {
+        console.log('ERROR');
+        console.log(error);
+      }
+    });
+});
+
+$('#pred_type').trigger('change');
+</script>
